@@ -516,7 +516,7 @@ public interface IStudentRepository
 
 Os manipuladores são as ações a serem executadas, seguindo o fluxo da aplicação, unindo todas as partes da aplicação.
 
-Nesse projeto, vamos seguir um exemplo de fluxo para criar um assinatura na plataforma:
+Nesse projeto, vamos seguir um exemplo de fluxo para criar uma assinatura na plataforma:
 
 - Validações iniciais com Fail Fast Validation.
 - Verificação se o CPF está cadastrado.
@@ -535,8 +535,8 @@ Nesse projeto, vamos seguir um exemplo de fluxo para criar um assinatura na plat
 No Handler podem ser herdadas as abstrações e implementadas as interfaces para realizar as ações.
 
 ```csharp
-// No Handler, herdamos as Notificações e implementamos todas as formas de Assinaturas via interface IHandler:
-// Boleto, Cartão e PayPal
+// No Handler, herdamos as Notificações e implementamos todas as formas de
+// Assinaturas via interface IHandler: Boleto, Cartão e PayPal
 public class SubscriptionHandler :
     Notifiable<Notification>,
     IHandler<CreateBoletoSubscriptionCommand>,
@@ -733,4 +733,50 @@ public static class StudentQueries
         return x => x.Document.Number == document;
     }
 }
+```
+
+Agora faça os testes simulando a consulta de um documento:
+
+```csharp
+[TestClass]
+    public class StudentQueriesTests
+    {
+        private IList<Student> _students = new List<Student>();
+
+        public StudentQueriesTests()
+        {
+            for (int i = 1; i <= 10; i++)
+            {
+                _students.Add(new Student(
+                    new Name("Aluno", $"Alu{i.ToString()}"),
+                    new Document($"11111111111{i.ToString()}", EDocumentType.CPF),
+                    new Email(i.ToString() + "email@email.suf")
+                ));
+            }
+        }
+
+        [TestMethod]
+        public void NullWhenDocumentNotExists()
+        {
+            var expression = StudentQueries.GetStudentInfo("12345678911");
+            var student = _students
+                            .AsQueryable()
+                            .Where(expression)
+                            .FirstOrDefault();
+
+            Assert.AreEqual(null, student);
+        }
+
+        [TestMethod]
+        public void ReturnStudentWhenDocumentExists()
+        {
+            var expression = StudentQueries.GetStudentInfo("111111111111");
+            var student = _students
+                            .AsQueryable()
+                            .Where(expression)
+                            .FirstOrDefault();
+
+            Assert.AreNotEqual(null, student);
+        }
+    }
 ```
