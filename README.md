@@ -1,6 +1,6 @@
 # Modelando domínios ricos
 
-Projeto para estudos e aprendizado dos conceitos de modelagem.
+Projeto para estudos e aprendizado dos conceitos de modelagem. [Curso balta.io](https://github.com/balta-io/1975).
 
 ## Linguagem Ubíqua
 
@@ -11,9 +11,9 @@ Temos a definição dos conceitos, tratamento e especificação no processo de m
 Os nomes comuns que o cliente usa devem ser incluídos no projeto, sem traduções ou adaptações.
 Ex: francesinha, sangria de caixa, boleto.
 
-Codificar em inglês ou português? Deve ser levado em consideração qual o time e seu nível tecnico.
+Codificar em inglês ou português? Deve ser levado em consideração qual o time e seu nível técnico.
 
-Evite o **portuglês**. Ex: ClienteGetByAno (GetBaiano), UsuarioRepository.
+Evite o "**portuglês**". Ex: ClienteGetByAno (GetBaiano), UsuarioRepository.
 
 ## Domínios ricos vs Domínios anêmicos
 
@@ -25,10 +25,10 @@ Problemas:
 - Dificuldade para criar e fazer testes, garantindo que está tudo funcionando.
 - Linguagens TSQL /PLSQL possuem limitações por serem interpretadas, nao conseguindo pegar erro em tempo de execução.
 
-**Domínio rico** | Toda modeladem é feita na aplicação e o banco de dados é utilizado como repositório.
-Trabalhando nesse cenário, é possivel separar as regras de negócio, permitindo testes sem utilizar o banco de dados.
+**Domínio rico** | Toda modelagem é feita na aplicação e o banco de dados é utilizado como repositório.
+Trabalhando nesse cenário, é possível separar as regras de negócio, permitindo testes sem utilizar o banco de dados.
 
-Devemos sempre evitar **overengineering** (super dimensionamento), que é criar uma solução muito complexa para resolver problemas simples. Por isso é tão importante analisar o que é solicitado e desenvolver uma aplicação para atender a demanda, sem exageros.
+Devemos sempre evitar **Over Engineering** (super dimensionamento), que é criar uma solução muito complexa para resolver problemas simples. Por isso é tão importante analisar o que é solicitado e desenvolver uma aplicação para atender a demanda, sem exageros.
 
 ## Sub domínios
 
@@ -40,7 +40,7 @@ Crie as partes do sistema ERP como módulos. Ex: Financeiro, Comercial, Fabrica,
 
 Para o sucesso de projetos, devemos controlar o tamanho da mudança. Ao invés de pensar em um sistema como um todo, foque apenas em uma pequena parte. Ex: criar uma solução para fazer pagamentos.
 
-A idéia é criar APIs para cada pequeno pedaço do sistema e fazer a comunicação por meio dessas APIs.
+A ideia é criar APIs para cada pequeno pedaço do sistema e fazer a comunicação por meio dessas APIs.
 
 Ex: A Netflix possui uma API com apenas um método GET para retornar filmes.
 
@@ -52,7 +52,7 @@ Basicamente devemos criar um contexto e separar em 3 pastas: Domain, Shared e Te
 
 Ex: PagamentoContexto
 
-- Pagamento.Dominio
+- Pagamento.Domínio
 - Pagamento.Compartilhado
 - Pagamento.Testes
 
@@ -70,7 +70,7 @@ dotnet sln add .\PaymentsContext.Tests\PaymentsContext.Tests.csproj
 ```
 
 PaymentsContext.Domain -> Domínio rico a ser modelado.
-PaymentsContext.Shared -> Itens que podem ser compartilhado entre multiplos domínios.
+PaymentsContext.Shared -> Itens que podem ser compartilhado entre múltiplos domínios.
 PaymentsContext.Tests -> Testes que vão ser executados.
 
 Por fim, adicione as referencias entre os projetos:
@@ -96,7 +96,7 @@ As entidades são as referências de uma conversa. Tudo que é necessário para 
 1. Defina as propriedades iniciais de cada entidade. Caso seja necessário alterar ou adicionar mais propriedades no futuro, não há problema.
 
 ```csharp
-// Representação basica de um cadastro de um aluno, com dados para identificação.
+// Representação básica de um cadastro de um aluno, com dados para identificação.
 namespace PaymentsContext.Domain.Entities
 {
     public class Student
@@ -105,7 +105,7 @@ namespace PaymentsContext.Domain.Entities
         public string LastName { get; set; }
         public string Document { get; set; }
         public string Email { get; set; }
-        // 1 aluno pode ter multiplas assinaturas
+        // 1 aluno pode ter múltiplas assinaturas
         public List<Subscription> Subscriptions { get; set; }
 
     }
@@ -240,11 +240,11 @@ string document;
 if(document.length > 0)
 ```
 
-Os tipos primitivos são os tipos básicos do Csharp. O ideal é criar seus próprios tipos, que incluem tratamento e validações, deixando o código mais enxuto e reutilizavél.
+Os tipos primitivos são os tipos básicos do Csharp. O ideal é criar seus próprios tipos, que incluem tratamento e validações, deixando o código mais enxuto e reutilizável.
 
 ## Value Objects
 
-Os objetos de valor são tipos que compoem uma entidade. Ao utilizar **VO**, paramos de usar tipos primitivos e passamos a usar tipos complexos.
+Os objetos de valor são tipos que compõem uma entidade. Ao utilizar **VO**, paramos de usar tipos primitivos e passamos a usar tipos complexos.
 
 Crie pastas ValueObjects em cada projeto na solution para melhor organização.
 
@@ -276,9 +276,9 @@ public Name Name
 
 Após modelar os VOs, temos a estrutura para fazer as validações.
 
-Devemos evitar lançar exceções, pois em produção, a Thread é interrompida e gera multiplos logs no sistema operacional.
+Devemos evitar lançar exceções, pois em produção, a Thread é interrompida e gera múltiplos logs no sistema operacional.
 
-**Exceptions** | Algo não esperado que ocorra. Ex: Banco de dados fora do ar, API indisponivel, falha de conexão.
+**Exceptions** | Algo não esperado que ocorra. Ex: Banco de dados fora do ar, API indisponível, falha de conexão.
 
 **Validations** | Algo que você espera que aconteça. Ex: Limite de caracteres no campo, valor maior que zero.
 
@@ -362,7 +362,7 @@ public class DocumentTests
     }
 
     [TestMethod]
-    public void ShouldReturnSucessWhenCPForCNPJIsValid()
+    public void ShouldReturnSuccessWhenCPForCNPJIsValid()
     {
         Assert.Fail();
     }
@@ -376,13 +376,13 @@ public class DocumentTests
 [TestMethod]
     public void ShouldReturnErrorWhenCNPJIsInvalid()
     {
-        // Um documento com apenas 3 numeros para CNPJ é invalido, retornando erro.
+        // Um documento com apenas 3 números para CNPJ é invalido, retornando erro.
         var document = new Document("123", EDocumentType.CNPJ);
         Assert.IsFalse(document.IsValid);
     }
 
     [TestMethod]
-    public void ShouldReturnSucessWhenCNPJIsValid()
+    public void ShouldReturnSuccessWhenCNPJIsValid()
     {
         // Um documento formatado como CNPJ é valido, retornando sucesso.
         var document = new Document("16677822000141", EDocumentType.CNPJ);
@@ -392,18 +392,18 @@ public class DocumentTests
     [TestMethod]
     public void ShouldReturnErrorWhenCPFIsInvalid()
     {
-        // Um documento com apenas 3 numeros para CPF é invalido, retornando erro.
+        // Um documento com apenas 3 números para CPF é invalido, retornando erro.
         var document = new Document("123", EDocumentType.CNPJ);
         Assert.IsFalse(document.IsValid);
     }
 
-    // Utilizando a anotação abaixo, é possivel testar com valores diferentes o método
+    // Utilizando a anotação abaixo, é possível testar com valores diferentes o método
     [TestMethod]
     [DataTestMethod]
     [DataRow("33330965525")]
     [DataRow("90108183300")]
     [DataRow("95784333798")]
-    public void ShouldReturnSucessWhenCPFIsValid(string cpf)
+    public void ShouldReturnSuccessWhenCPFIsValid(string cpf)
     {
         // Um documento formatado como CPF é valido, retornando sucesso.
         var document = new Document(cpf, EDocumentType.CNPJ);
@@ -413,7 +413,7 @@ public class DocumentTests
 
 ## Commands
 
-Utilizando o Padrão CQRS -> Segregração de Responsabilidade de Comandos e Consulta.
+Utilizando o Padrão CQRS -> Segregação de Responsabilidade de Comandos e Consulta.
 
 Aqui temos a segregação de inputs e queries, separando as operações de leitura e atualização de um armazenamento de dados.
 
@@ -437,7 +437,7 @@ public string BoletoNumber { get; set; }
 
 ## Fail Fast Validations
 
-É uma tecnica onde colocamos as validações diretamente nos Commands.
+É uma técnica onde colocamos as validações diretamente nos Commands.
 
 A intenção é validar antes de dar sequencia a uma requisição, evitando acesso desnecessário ao banco de dados e outros recursos.
 
@@ -507,7 +507,7 @@ public interface IStudentRepository
     // Método que verifica se o aluno possui email na fonte de dados
     bool EmailExists(string email);
 
-    // Metódo para criar uma assinatura, passando o objeto aluno.
+    // Método para criar uma assinatura, passando o objeto aluno.
     void CreateSubscription(Student student);
 }
 ```
@@ -627,7 +627,7 @@ public ICommandResult Handle(CreateBoletoSubscriptionCommand command)
             return new CommandResult(false, "Não foi possível realizar a assinatura");
         }
 
-        // Salva as informações no repositorio
+        // Salva as informações no repositório
         _repository.CreateSubscription(student);
 
         // Envia o Email de boas vindas
@@ -651,7 +651,7 @@ Os **Mocks** são a representação de dados de fictícios para simulação de t
 1. Adicione as representações dos dados com o prefixo Fake. Ex: FakeStudentRepository.cs
 
 ```csharp
-// Como o repositório é uma interface, reaproveitamos o código para testes, pois a implementação é flexivel.
+// Como o repositório é uma interface, reaproveitamos o código para testes, pois a implementação é flexível.
 public class FakeStudentRepository : IStudentRepository
 {
     public void CreateSubscription(Student student)
@@ -694,7 +694,7 @@ Agora crie o HandlerTests para testar o processo:
                 new FakeEmailService()
             );
 
-            // Criado um objeto do tipo CreateBoletoSubscriptionCommand, para passagem de parametros
+            // Criado um objeto do tipo CreateBoletoSubscriptionCommand, para passagem de parâmetros
             var command = new CreateBoletoSubscriptionCommand();
 
             command.FirstName = "Thiago";
@@ -721,7 +721,7 @@ Agora crie o HandlerTests para testar o processo:
 
 Aqui criamos as regras para leitura de dados.
 
-As queries serão aplicaveis no caso de consultas simples. Para Stored Procedures, é necessário fazer um DE/PARA.
+As queries serão aplicáveis no caso de consultas simples. Para Stored Procedures, é necessário fazer um DE/PARA.
 
 Crie uma pasta Queries no domain. Agora crie suas consultas usando LINQ do Csharp:
 
